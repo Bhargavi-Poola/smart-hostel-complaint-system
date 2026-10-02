@@ -1,0 +1,277 @@
+{% extends "base.html" %}
+
+{% block title %}My Complaints - Smart Hostel{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">My Complaints</h2>
+            <p class="text-muted mb-0">
+                View and track all your hostel complaints.
+            </p>
+        </div>
+
+        <a href="{{ url_for('raise_complaint') }}"
+           class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i>
+            Raise Complaint
+        </a>
+    </div>
+
+
+    {% if complaints %}
+
+    <!-- Complaints Table -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-0">
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th class="px-4">Complaint ID</th>
+                            <th>Room</th>
+                            <th>Category</th>
+                            <th>Description</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th class="text-center">Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        {% for complaint in complaints %}
+
+                        <tr>
+
+                            <!-- Complaint ID -->
+                            <td class="px-4">
+                                <span class="fw-semibold text-primary">
+                                    {{ complaint['complaint_id'] }}
+                                </span>
+                            </td>
+
+                            <!-- Room -->
+                            <td>
+                                {{ complaint['room_number'] }}
+                            </td>
+
+                            <!-- Category -->
+                            <td>
+                                {% if complaint['category'] == 'Electrical' %}
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-lightning-charge"></i>
+                                        Electrical
+                                    </span>
+
+                                {% elif complaint['category'] == 'Plumbing' %}
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-droplet"></i>
+                                        Plumbing
+                                    </span>
+
+                                {% elif complaint['category'] == 'Cleaning' %}
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-stars"></i>
+                                        Cleaning
+                                    </span>
+
+                                {% elif complaint['category'] == 'Wi-Fi/Network' %}
+                                    <span class="badge bg-primary">
+                                        <i class="bi bi-wifi"></i>
+                                        Wi-Fi/Network
+                                    </span>
+
+                                {% else %}
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-tools"></i>
+                                        General Maintenance
+                                    </span>
+                                {% endif %}
+                            </td>
+
+                            <!-- Description -->
+                            <td>
+                                {% if complaint['description']|length > 40 %}
+                                    {{ complaint['description'][:40] }}...
+                                {% else %}
+                                    {{ complaint['description'] }}
+                                {% endif %}
+                            </td>
+
+                            <!-- Status -->
+                            <td>
+
+                                {% if complaint['status'] == 'Submitted' %}
+
+                                    <span class="badge bg-secondary">
+                                        <i class="bi bi-send"></i>
+                                        Submitted
+                                    </span>
+
+                                {% elif complaint['status'] == 'Assigned' %}
+
+                                    <span class="badge bg-info">
+                                        <i class="bi bi-person-check"></i>
+                                        Assigned
+                                    </span>
+
+                                {% elif complaint['status'] == 'In Progress' %}
+
+                                    <span class="badge bg-warning text-dark">
+                                        <i class="bi bi-hourglass-split"></i>
+                                        In Progress
+                                    </span>
+
+                                {% elif complaint['status'] == 'Resolved' %}
+
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-circle"></i>
+                                        Resolved
+                                    </span>
+
+                                {% else %}
+
+                                    <span class="badge bg-secondary">
+                                        {{ complaint['status'] }}
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <!-- Date -->
+                            <td>
+                                <small class="text-muted">
+                                    {{ complaint['created_at'] }}
+                                </small>
+                            </td>
+
+                            <!-- Action -->
+                            <td class="text-center">
+
+                                <a href="{{ url_for(
+                                    'student_complaint_details',
+                                    complaint_id=complaint['id']
+                                ) }}"
+                                   class="btn btn-sm btn-outline-primary">
+
+                                    <i class="bi bi-eye"></i>
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Status Information -->
+    <div class="row mt-4 g-3">
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="badge bg-secondary mb-2">
+                        Submitted
+                    </span>
+                    <p class="small text-muted mb-0">
+                        Complaint has been submitted and is waiting for review.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="badge bg-info mb-2">
+                        Assigned
+                    </span>
+                    <p class="small text-muted mb-0">
+                        A maintenance staff member has been assigned.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="badge bg-warning text-dark mb-2">
+                        In Progress
+                    </span>
+                    <p class="small text-muted mb-0">
+                        Maintenance work is currently in progress.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm h-100">
+                <div class="card-body">
+                    <span class="badge bg-success mb-2">
+                        Resolved
+                    </span>
+                    <p class="small text-muted mb-0">
+                        The reported problem has been solved.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    {% else %}
+
+    <!-- Empty State -->
+    <div class="card border-0 shadow-sm">
+        <div class="card-body text-center py-5">
+
+            <i class="bi bi-clipboard-x display-3 text-muted"></i>
+
+            <h4 class="fw-bold mt-3">
+                No Complaints Found
+            </h4>
+
+            <p class="text-muted">
+                You haven't raised any hostel complaints yet.
+            </p>
+
+            <a href="{{ url_for('raise_complaint') }}"
+               class="btn btn-primary">
+
+                <i class="bi bi-plus-circle"></i>
+                Raise Your First Complaint
+
+            </a>
+
+        </div>
+    </div>
+
+    {% endif %}
+
+</div>
+
+{% endblock %}

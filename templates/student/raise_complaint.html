@@ -1,0 +1,184 @@
+{% extends "base.html" %}
+
+{% block title %}Raise Complaint - Smart Hostel{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Page Header -->
+    <div class="mb-4">
+        <h2 class="fw-bold">Raise a Complaint</h2>
+        <p class="text-muted">
+            Report a hostel problem and track its progress easily.
+        </p>
+    </div>
+
+    <div class="row justify-content-center">
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0">
+                <div class="card-body p-4">
+
+                    <form method="POST"
+                          action="{{ url_for('raise_complaint') }}"
+                          enctype="multipart/form-data">
+
+                        <!-- Student Details -->
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Student Name
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       value="{{ session.get('name', '') }}"
+                                       readonly>
+                            </div>
+
+                            <div class="col-md-6">
+                                <label class="form-label fw-semibold">
+                                    Hostel
+                                </label>
+                                <input type="text"
+                                       class="form-control"
+                                       value="{{ session.get('hostel_type', '') }} Hostel"
+                                       readonly>
+                            </div>
+
+                        </div>
+
+                        <!-- Room Number -->
+                        <div class="mb-3">
+                            <label for="room_number"
+                                   class="form-label fw-semibold">
+                                Room Number <span class="text-danger">*</span>
+                            </label>
+
+                            <input type="text"
+                                   class="form-control"
+                                   id="room_number"
+                                   name="room_number"
+                                   placeholder="Enter your room number"
+                                   maxlength="20"
+                                   required>
+                        </div>
+
+                        <!-- Category -->
+                        <div class="mb-3">
+                            <label for="category"
+                                   class="form-label fw-semibold">
+                                Complaint Category
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <select class="form-select"
+                                    id="category"
+                                    name="category"
+                                    required>
+
+                                <option value="">
+                                    Select complaint category
+                                </option>
+
+                                <option value="Electrical">
+                                    Electrical
+                                </option>
+
+                                <option value="Plumbing">
+                                    Plumbing
+                                </option>
+
+                                <option value="Cleaning">
+                                    Cleaning
+                                </option>
+
+                                <option value="Wi-Fi/Network">
+                                    Wi-Fi / Network
+                                </option>
+
+                                <option value="General Maintenance">
+                                    General Maintenance
+                                </option>
+
+                            </select>
+                        </div>
+
+                        <!-- Description -->
+                        <div class="mb-3">
+                            <label for="description"
+                                   class="form-label fw-semibold">
+                                Problem Description
+                                <span class="text-danger">*</span>
+                            </label>
+
+                            <textarea class="form-control"
+                                      id="description"
+                                      name="description"
+                                      rows="5"
+                                      maxlength="1000"
+                                      placeholder="Describe the problem clearly..."
+                                      required></textarea>
+
+                            <div class="form-text">
+                                Please provide enough details so the maintenance
+                                staff can understand the issue.
+                            </div>
+                        </div>
+
+                        <!-- Photo -->
+                        <div class="mb-4">
+                            <label for="photo"
+                                   class="form-label fw-semibold">
+                                Upload Photo
+                                <span class="text-muted">(Optional)</span>
+                            </label>
+
+                            <input type="file"
+                                   class="form-control"
+                                   id="photo"
+                                   name="photo"
+                                   accept=".jpg,.jpeg,.png,.gif,.webp">
+
+                            <div class="form-text">
+                                Supported formats: JPG, JPEG, PNG, GIF, WEBP.
+                                Maximum size: 5 MB.
+                            </div>
+                        </div>
+
+                        <!-- Important Note -->
+                        <div class="alert alert-info">
+                            <strong>Note:</strong>
+                            After submitting, a unique Complaint ID will be
+                            generated. You can use it to track your complaint.
+                        </div>
+
+                        <!-- Buttons -->
+                        <div class="d-flex justify-content-between">
+
+                            <a href="{{ url_for('student_dashboard') }}"
+                               class="btn btn-outline-secondary">
+                                <i class="bi bi-arrow-left"></i>
+                                Cancel
+                            </a>
+
+                            <button type="submit"
+                                    class="btn btn-primary px-4">
+                                <i class="bi bi-send"></i>
+                                Submit Complaint
+                            </button>
+
+                        </div>
+
+                    </form>
+
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

@@ -1,0 +1,516 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Maintenance Staff{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-people-fill"></i>
+                Maintenance Staff
+            </h2>
+
+            <p class="text-muted mb-0">
+                Manage hostel maintenance staff and their departments
+            </p>
+        </div>
+
+        <a href="{{ url_for('admin_dashboard') }}"
+           class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i>
+            Dashboard
+        </a>
+
+    </div>
+
+
+    <!-- Summary Cards -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+                    <i class="bi bi-people fs-1 text-primary"></i>
+
+                    <h3 class="fw-bold mt-2">
+                        {{ staff|length }}
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Total Staff
+                    </p>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+
+                    <i class="bi bi-gender-male fs-1 text-primary"></i>
+
+                    <h3 class="fw-bold mt-2">
+                        {{ staff|selectattr('hostel_type', 'equalto', 'Boys')|list|length }}
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Boys Hostel
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+
+                    <i class="bi bi-gender-female fs-1 text-danger"></i>
+
+                    <h3 class="fw-bold mt-2">
+                        {{ staff|selectattr('hostel_type', 'equalto', 'Girls')|list|length }}
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Girls Hostel
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+
+        <div class="col-md-3">
+            <div class="card border-0 shadow-sm">
+                <div class="card-body text-center">
+
+                    <i class="bi bi-tools fs-1 text-warning"></i>
+
+                    <h3 class="fw-bold mt-2">
+                        {{ staff|map(attribute='department')|unique|list|length }}
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Departments
+                    </p>
+
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Staff Table -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+
+            <div class="d-flex justify-content-between align-items-center">
+
+                <h5 class="mb-0 fw-bold">
+                    <i class="bi bi-person-lines-fill"></i>
+                    Staff Details
+                </h5>
+
+                <div class="input-group" style="max-width: 300px;">
+
+                    <span class="input-group-text">
+                        <i class="bi bi-search"></i>
+                    </span>
+
+                    <input type="text"
+                           id="staffSearch"
+                           class="form-control"
+                           placeholder="Search staff...">
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if staff %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="staffTable">
+
+                    <thead class="table-light">
+
+                        <tr>
+                            <th>#</th>
+                            <th>Staff Name</th>
+                            <th>Phone</th>
+                            <th>Department</th>
+                            <th>Hostel</th>
+                            <th>Username</th>
+                            <th>Actions</th>
+                        </tr>
+
+                    </thead>
+
+                    <tbody>
+
+                    {% for member in staff %}
+
+                    <tr>
+
+                        <td>
+                            {{ loop.index }}
+                        </td>
+
+                        <td>
+
+                            <div class="d-flex align-items-center">
+
+                                <div class="rounded-circle bg-primary text-white
+                                            d-flex align-items-center justify-content-center me-2"
+                                     style="width: 40px; height: 40px;">
+
+                                    <i class="bi bi-person"></i>
+
+                                </div>
+
+                                <div>
+                                    <strong>
+                                        {{ member['name'] }}
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                        </td>
+
+
+                        <td>
+
+                            {% if member['phone'] %}
+
+                            <a href="tel:{{ member['phone'] }}"
+                               class="text-decoration-none">
+
+                                <i class="bi bi-telephone"></i>
+                                {{ member['phone'] }}
+
+                            </a>
+
+                            {% else %}
+
+                            <span class="text-muted">
+                                Not provided
+                            </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if member['department'] == 'Electrical' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-lightning"></i>
+                                    Electrical
+                                </span>
+
+                            {% elif member['department'] == 'Plumbing' %}
+
+                                <span class="badge bg-info">
+                                    <i class="bi bi-droplet"></i>
+                                    Plumbing
+                                </span>
+
+                            {% elif member['department'] == 'Cleaning' %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-stars"></i>
+                                    Cleaning
+                                </span>
+
+                            {% elif member['department'] == 'Wi-Fi/Network' %}
+
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-wifi"></i>
+                                    Wi-Fi/Network
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-tools"></i>
+                                    {{ member['department'] }}
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+
+                            {% if member['hostel_type'] == 'Boys' %}
+
+                                <span class="badge bg-primary">
+                                    Boys Hostel
+                                </span>
+
+                            {% else %}
+
+                                <span class="badge bg-danger">
+                                    Girls Hostel
+                                </span>
+
+                            {% endif %}
+
+                        </td>
+
+
+                        <td>
+                            <code>
+                                {{ member['username'] }}
+                            </code>
+                        </td>
+
+
+                        <td>
+
+                            <button class="btn btn-sm btn-outline-primary"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#staffModal{{ member['id'] }}">
+
+                                <i class="bi bi-eye"></i>
+                                View
+
+                            </button>
+
+                        </td>
+
+                    </tr>
+
+
+                    <!-- Staff Details Modal -->
+                    <div class="modal fade"
+                         id="staffModal{{ member['id'] }}"
+                         tabindex="-1">
+
+                        <div class="modal-dialog modal-dialog-centered">
+
+                            <div class="modal-content">
+
+                                <div class="modal-header">
+
+                                    <h5 class="modal-title">
+                                        <i class="bi bi-person-circle"></i>
+                                        Staff Details
+                                    </h5>
+
+                                    <button type="button"
+                                            class="btn-close"
+                                            data-bs-dismiss="modal">
+                                    </button>
+
+                                </div>
+
+
+                                <div class="modal-body">
+
+                                    <div class="text-center mb-4">
+
+                                        <div class="rounded-circle bg-primary text-white
+                                                    d-inline-flex align-items-center
+                                                    justify-content-center"
+                                             style="width: 70px; height: 70px;">
+
+                                            <i class="bi bi-person fs-2"></i>
+
+                                        </div>
+
+                                        <h5 class="fw-bold mt-2 mb-0">
+                                            {{ member['name'] }}
+                                        </h5>
+
+                                        <small class="text-muted">
+                                            Maintenance Staff
+                                        </small>
+
+                                    </div>
+
+
+                                    <div class="row g-3">
+
+                                        <div class="col-6">
+                                            <div class="border rounded p-3">
+
+                                                <small class="text-muted">
+                                                    Department
+                                                </small>
+
+                                                <div class="fw-semibold">
+                                                    {{ member['department'] }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-6">
+                                            <div class="border rounded p-3">
+
+                                                <small class="text-muted">
+                                                    Hostel
+                                                </small>
+
+                                                <div class="fw-semibold">
+                                                    {{ member['hostel_type'] }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <div class="border rounded p-3">
+
+                                                <small class="text-muted">
+                                                    Phone Number
+                                                </small>
+
+                                                <div class="fw-semibold">
+
+                                                    {% if member['phone'] %}
+
+                                                    <a href="tel:{{ member['phone'] }}"
+                                                       class="text-decoration-none">
+
+                                                        <i class="bi bi-telephone"></i>
+                                                        {{ member['phone'] }}
+
+                                                    </a>
+
+                                                    {% else %}
+
+                                                    Not provided
+
+                                                    {% endif %}
+
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+
+                                        <div class="col-12">
+                                            <div class="border rounded p-3">
+
+                                                <small class="text-muted">
+                                                    Username
+                                                </small>
+
+                                                <div class="fw-semibold">
+                                                    {{ member['username'] }}
+                                                </div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+
+                                <div class="modal-footer">
+
+                                    <button type="button"
+                                            class="btn btn-secondary"
+                                            data-bs-dismiss="modal">
+
+                                        Close
+
+                                    </button>
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <i class="bi bi-people fs-1 text-muted"></i>
+
+                <h5 class="mt-3">
+                    No Maintenance Staff
+                </h5>
+
+                <p class="text-muted">
+                    No maintenance staff members have been registered yet.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<script>
+
+document.addEventListener("DOMContentLoaded", function () {
+
+    const searchInput = document.getElementById("staffSearch");
+    const table = document.getElementById("staffTable");
+
+    if (!searchInput || !table) {
+        return;
+    }
+
+    searchInput.addEventListener("keyup", function () {
+
+        const searchValue = this.value.toLowerCase();
+        const rows = table.querySelectorAll("tbody tr");
+
+        rows.forEach(function (row) {
+
+            const text = row.textContent.toLowerCase();
+
+            row.style.display =
+                text.includes(searchValue) ? "" : "none";
+
+        });
+
+    });
+
+});
+
+</script>
+
+{% endblock %}

@@ -1,0 +1,303 @@
+{% extends "base.html" %}
+
+{% block title %}Assign Maintenance Staff - Smart Hostel{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1">
+                <i class="bi bi-person-check text-primary"></i>
+                Assign Maintenance Staff
+            </h2>
+            <p class="text-muted mb-0">
+                Assign the complaint to the appropriate maintenance staff.
+            </p>
+        </div>
+
+        <a href="{{ url_for('warden_complaint_details', complaint_id=complaint['id']) }}"
+           class="btn btn-outline-secondary">
+            <i class="bi bi-arrow-left"></i>
+            Back
+        </a>
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- Complaint Details -->
+        <div class="col-lg-7">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clipboard-check"></i>
+                        Complaint Information
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row g-4">
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Complaint ID</small>
+                            <h6 class="fw-bold mt-1">
+                                {{ complaint['complaint_id'] }}
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Status</small>
+                            <div class="mt-1">
+                                {% if complaint['status'] == 'Submitted' %}
+                                    <span class="badge bg-secondary">
+                                        Submitted
+                                    </span>
+                                {% elif complaint['status'] == 'Assigned' %}
+                                    <span class="badge bg-primary">
+                                        Assigned
+                                    </span>
+                                {% elif complaint['status'] == 'In Progress' %}
+                                    <span class="badge bg-warning text-dark">
+                                        In Progress
+                                    </span>
+                                {% elif complaint['status'] == 'Resolved' %}
+                                    <span class="badge bg-success">
+                                        Resolved
+                                    </span>
+                                {% endif %}
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Student</small>
+                            <h6 class="fw-bold mt-1">
+                                <i class="bi bi-person"></i>
+                                {{ complaint['student_name'] }}
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Roll Number</small>
+                            <h6 class="fw-bold mt-1">
+                                {{ complaint['roll_number'] }}
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Hostel</small>
+                            <h6 class="fw-bold mt-1">
+                                <i class="bi bi-building"></i>
+                                {{ complaint['hostel_type'] }} Hostel
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Room Number</small>
+                            <h6 class="fw-bold mt-1">
+                                <i class="bi bi-door-open"></i>
+                                {{ complaint['room_number'] }}
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Category</small>
+                            <h6 class="fw-bold mt-1">
+                                <i class="bi bi-tools"></i>
+                                {{ complaint['category'] }}
+                            </h6>
+                        </div>
+
+                        <div class="col-md-6">
+                            <small class="text-muted">Submitted On</small>
+                            <h6 class="fw-bold mt-1">
+                                {{ complaint['created_at'] }}
+                            </h6>
+                        </div>
+
+                    </div>
+
+                    <hr class="my-4">
+
+                    <div>
+                        <small class="text-muted">
+                            Problem Description
+                        </small>
+
+                        <div class="bg-light rounded p-3 mt-2">
+                            {{ complaint['description'] }}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+
+        <!-- Assignment Form -->
+        <div class="col-lg-5">
+
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header bg-primary text-white py-3">
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-gear"></i>
+                        Assign Maintenance Staff
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    {% if staff and staff|length > 0 %}
+
+                    <form method="POST"
+                          action="{{ url_for('assign_staff', complaint_id=complaint['id']) }}">
+
+                        <!-- Staff Selection -->
+                        <div class="mb-4">
+
+                            <label for="staff_id" class="form-label fw-semibold">
+                                Select Maintenance Staff
+                            </label>
+
+                            <select name="staff_id"
+                                    id="staff_id"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    -- Select Staff --
+                                </option>
+
+                                {% for member in staff %}
+
+                                <option value="{{ member['id'] }}">
+
+                                    {{ member['name'] }}
+
+                                    {% if member['department'] %}
+                                        - {{ member['department'] }}
+                                    {% endif %}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <!-- Assignment Note -->
+                        <div class="mb-4">
+
+                            <label for="note" class="form-label fw-semibold">
+                                Assignment Note
+                                <span class="text-muted">(Optional)</span>
+                            </label>
+
+                            <textarea name="note"
+                                      id="note"
+                                      class="form-control"
+                                      rows="5"
+                                      placeholder="Add instructions for maintenance staff..."></textarea>
+
+                        </div>
+
+
+                        <!-- Submit -->
+                        <button type="submit"
+                                class="btn btn-primary w-100 py-2">
+
+                            <i class="bi bi-person-check"></i>
+                            Assign Staff
+
+                        </button>
+
+                    </form>
+
+                    {% else %}
+
+                    <!-- No Staff -->
+                    <div class="text-center py-4">
+
+                        <div class="mb-3">
+                            <i class="bi bi-person-x text-danger"
+                               style="font-size: 3rem;"></i>
+                        </div>
+
+                        <h5 class="fw-bold">
+                            No Maintenance Staff Available
+                        </h5>
+
+                        <p class="text-muted mb-3">
+                            No maintenance staff are currently registered
+                            for {{ complaint['hostel_type'] }} Hostel.
+                        </p>
+
+                        <a href="{{ url_for('warden_complaints') }}"
+                           class="btn btn-outline-primary">
+
+                            <i class="bi bi-arrow-left"></i>
+                            Back to Complaints
+
+                        </a>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+            </div>
+
+
+            <!-- Information Card -->
+            <div class="card border-0 shadow-sm mt-4">
+
+                <div class="card-body">
+
+                    <h6 class="fw-bold">
+                        <i class="bi bi-info-circle text-primary"></i>
+                        Assignment Flow
+                    </h6>
+
+                    <div class="mt-3">
+
+                        <div class="d-flex mb-3">
+                            <span class="badge bg-secondary me-2">1</span>
+                            <span>Complaint submitted by student</span>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <span class="badge bg-primary me-2">2</span>
+                            <span>Warden assigns maintenance staff</span>
+                        </div>
+
+                        <div class="d-flex mb-3">
+                            <span class="badge bg-warning text-dark me-2">3</span>
+                            <span>Staff works on the complaint</span>
+                        </div>
+
+                        <div class="d-flex">
+                            <span class="badge bg-success me-2">4</span>
+                            <span>Complaint is marked as resolved</span>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

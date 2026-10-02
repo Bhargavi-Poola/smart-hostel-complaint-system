@@ -1,0 +1,469 @@
+{% extends "base.html" %}
+
+{% block title %}Complaint Details - Warden{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Complaint Details</h2>
+            <p class="text-muted mb-0">
+                Review the complaint and assign maintenance staff.
+            </p>
+        </div>
+
+        <a href="{{ url_for('warden_complaints') }}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+            Back to Complaints
+
+        </a>
+
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- LEFT SIDE -->
+        <div class="col-lg-8">
+
+            <!-- Complaint Information -->
+            <div class="card border-0 shadow-sm mb-4">
+
+                <div class="card-header bg-primary text-white py-3">
+
+                    <div class="d-flex justify-content-between align-items-center">
+
+                        <h5 class="mb-0">
+                            <i class="bi bi-file-text"></i>
+                            Complaint Information
+                        </h5>
+
+                        <span class="badge bg-light text-primary">
+                            {{ complaint['complaint_id'] }}
+                        </span>
+
+                    </div>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    <div class="row g-4">
+
+                        <!-- Student -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Student
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-person text-primary"></i>
+                                {{ complaint['student_name'] }}
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Roll Number -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Roll Number
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-person-badge text-primary"></i>
+                                {{ complaint['roll_number'] }}
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Hostel -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Hostel
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-building text-primary"></i>
+                                {{ complaint['hostel_type'] }} Hostel
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Room -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Room Number
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-door-open text-primary"></i>
+                                {{ complaint['room_number'] }}
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Category -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Category
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-tools text-primary"></i>
+                                {{ complaint['category'] }}
+                            </h6>
+
+                        </div>
+
+
+                        <!-- Date -->
+                        <div class="col-md-6">
+
+                            <small class="text-muted">
+                                Submitted On
+                            </small>
+
+                            <h6 class="fw-semibold mt-1">
+                                <i class="bi bi-calendar3 text-primary"></i>
+                                {{ complaint['created_at'] }}
+                            </h6>
+
+                        </div>
+
+                    </div>
+
+
+                    <hr>
+
+
+                    <!-- Description -->
+                    <div>
+
+                        <small class="text-muted">
+                            Problem Description
+                        </small>
+
+                        <div class="bg-light rounded p-3 mt-2">
+
+                            {{ complaint['description'] }}
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- Photo -->
+                    {% if complaint['photo'] %}
+
+                    <hr>
+
+                    <div>
+
+                        <small class="text-muted">
+                            Uploaded Photo
+                        </small>
+
+                        <div class="mt-2">
+
+                            <img src="{{ url_for(
+                                'static',
+                                filename='uploads/complaint_photos/' + complaint['photo']
+                            ) }}"
+                                 class="img-fluid rounded border"
+                                 style="max-height: 400px;"
+                                 alt="Complaint Photo">
+
+                        </div>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Complaint History -->
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-light py-3">
+
+                    <h5 class="fw-bold mb-0">
+                        <i class="bi bi-clock-history"></i>
+                        Complaint History
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    {% if updates %}
+
+                        {% for update in updates %}
+
+                        <div class="d-flex mb-4">
+
+                            <div class="me-3">
+
+                                {% if update['status'] == 'Resolved' %}
+
+                                <span class="badge rounded-circle bg-success p-2">
+                                    <i class="bi bi-check"></i>
+                                </span>
+
+                                {% elif update['status'] == 'In Progress' %}
+
+                                <span class="badge rounded-circle
+                                             bg-warning text-dark p-2">
+                                    <i class="bi bi-tools"></i>
+                                </span>
+
+                                {% elif update['status'] == 'Assigned' %}
+
+                                <span class="badge rounded-circle bg-info p-2">
+                                    <i class="bi bi-person-check"></i>
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge rounded-circle
+                                             bg-secondary p-2">
+                                    <i class="bi bi-send"></i>
+                                </span>
+
+                                {% endif %}
+
+                            </div>
+
+
+                            <div>
+
+                                <strong>
+                                    {{ update['status'] }}
+                                </strong>
+
+                                <small class="text-muted ms-2">
+                                    {{ update['updated_at'] }}
+                                </small>
+
+                                {% if update['note'] %}
+
+                                <p class="text-muted small mb-0 mt-1">
+                                    {{ update['note'] }}
+                                </p>
+
+                                {% endif %}
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    {% else %}
+
+                        <p class="text-muted mb-0">
+                            No updates available.
+                        </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- RIGHT SIDE -->
+        <div class="col-lg-4">
+
+            <!-- Current Status -->
+            <div class="card border-0 shadow-sm mb-4">
+
+                <div class="card-body text-center">
+
+                    <i class="bi bi-clipboard-check display-4 text-primary"></i>
+
+                    <h5 class="fw-bold mt-3">
+                        Current Status
+                    </h5>
+
+
+                    {% if complaint['status'] == 'Submitted' %}
+
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        Submitted
+                    </span>
+
+                    {% elif complaint['status'] == 'Assigned' %}
+
+                    <span class="badge bg-info fs-6 px-3 py-2">
+                        Assigned
+                    </span>
+
+                    {% elif complaint['status'] == 'In Progress' %}
+
+                    <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                        In Progress
+                    </span>
+
+                    {% elif complaint['status'] == 'Resolved' %}
+
+                    <span class="badge bg-success fs-6 px-3 py-2">
+                        Resolved
+                    </span>
+
+                    {% else %}
+
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        {{ complaint['status'] }}
+                    </span>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+
+            <!-- Assign Staff -->
+            <div class="card border-0 shadow-sm">
+
+                <div class="card-header bg-primary text-white py-3">
+
+                    <h5 class="mb-0">
+                        <i class="bi bi-person-gear"></i>
+                        Assign Maintenance Staff
+                    </h5>
+
+                </div>
+
+
+                <div class="card-body">
+
+                    {% if complaint['status'] != 'Resolved' %}
+
+                    <form method="POST"
+                          action="{{ url_for(
+                              'assign_staff',
+                              complaint_id=complaint['id']
+                          ) }}">
+
+                        <div class="mb-3">
+
+                            <label for="staff_id"
+                                   class="form-label fw-semibold">
+
+                                Select Staff
+
+                            </label>
+
+                            <select class="form-select"
+                                    id="staff_id"
+                                    name="staff_id"
+                                    required>
+
+                                <option value="">
+                                    Select maintenance staff
+                                </option>
+
+                                {% for staff_member in staff %}
+
+                                <option value="{{ staff_member['id'] }}"
+                                    {% if complaint['assigned_staff_id'] == staff_member['id'] %}
+                                        selected
+                                    {% endif %}>
+
+                                    {{ staff_member['name'] }}
+                                    -
+                                    {{ staff_member['department'] }}
+
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label for="note"
+                                   class="form-label fw-semibold">
+
+                                Assignment Note
+                                <span class="text-muted">
+                                    (Optional)
+                                </span>
+
+                            </label>
+
+                            <textarea class="form-control"
+                                      id="note"
+                                      name="note"
+                                      rows="3"
+                                      placeholder="Add instructions for maintenance staff..."></textarea>
+
+                        </div>
+
+
+                        <button type="submit"
+                                class="btn btn-primary w-100">
+
+                            <i class="bi bi-person-check"></i>
+                            Assign Staff
+
+                        </button>
+
+                    </form>
+
+                    {% else %}
+
+                    <div class="text-center py-3">
+
+                        <i class="bi bi-check-circle
+                                  display-5 text-success"></i>
+
+                        <p class="fw-semibold mt-3 mb-0">
+                            Complaint Resolved
+                        </p>
+
+                        <p class="text-muted small">
+                            No further assignment is required.
+                        </p>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

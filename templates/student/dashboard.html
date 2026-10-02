@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Student Dashboard | Smart Hostel</title>
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <link
+        rel="stylesheet"
+        href="{{ url_for('static', filename='css/style.css') }}"
+    >
+</head>
+
+<body class="bg-light">
+
+<!-- Navbar -->
+<nav class="navbar navbar-dark bg-primary">
+    <div class="container">
+
+        <a class="navbar-brand fw-bold" href="#">
+            🏠 Smart Hostel
+        </a>
+
+        <div class="d-flex align-items-center gap-3">
+
+            <span class="text-white">
+                👤 {{ user["name"] }}
+            </span>
+
+            <a
+                href="{{ url_for('logout') }}"
+                class="btn btn-light btn-sm"
+            >
+                Logout
+            </a>
+
+        </div>
+
+    </div>
+</nav>
+
+
+<!-- Dashboard -->
+<div class="container py-4">
+
+    <!-- Welcome -->
+    <div class="mb-4">
+
+        <h2 class="fw-bold">
+            Welcome, {{ user["name"] }} 👋
+        </h2>
+
+        <p class="text-muted mb-0">
+            Manage and track your hostel complaints from here.
+        </p>
+
+    </div>
+
+
+    <!-- Quick Actions -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+
+            <a
+                href="{{ url_for('raise_complaint') }}"
+                class="text-decoration-none"
+            >
+
+                <div class="card dashboard-action-card shadow-sm border-0 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="fs-1 mb-2">
+                            📝
+                        </div>
+
+                        <h5 class="fw-bold text-dark">
+                            Raise Complaint
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Report a hostel problem and upload a photo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <a
+                href="{{ url_for('student_complaints') }}"
+                class="text-decoration-none"
+            >
+
+                <div class="card dashboard-action-card shadow-sm border-0 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="fs-1 mb-2">
+                            📋
+                        </div>
+
+                        <h5 class="fw-bold text-dark">
+                            My Complaints
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            View and track all your complaints.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+
+        <div class="col-md-4">
+
+            <a
+                href="{{ url_for('student_profile') }}"
+                class="text-decoration-none"
+            >
+
+                <div class="card dashboard-action-card shadow-sm border-0 h-100">
+
+                    <div class="card-body p-4">
+
+                        <div class="fs-1 mb-2">
+                            👤
+                        </div>
+
+                        <h5 class="fw-bold text-dark">
+                            My Profile
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            View your student and hostel details.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <!-- Student Information -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body p-4">
+
+            <h5 class="fw-bold mb-3">
+                Student Information
+            </h5>
+
+            <div class="row">
+
+                <div class="col-md-4 mb-2">
+
+                    <strong>Name:</strong>
+                    {{ user["name"] }}
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <strong>Roll Number:</strong>
+                    {{ user["roll_number"] }}
+
+                </div>
+
+                <div class="col-md-4 mb-2">
+
+                    <strong>Hostel:</strong>
+
+                    {% if user["hostel_type"] == "Boys" %}
+                        Boys Hostel
+                    {% else %}
+                        Girls Hostel
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Recent Complaints -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-body p-4">
+
+            <div class="d-flex justify-content-between align-items-center mb-3">
+
+                <h5 class="fw-bold mb-0">
+                    My Recent Complaints
+                </h5>
+
+                <a
+                    href="{{ url_for('student_complaints') }}"
+                    class="btn btn-outline-primary btn-sm"
+                >
+                    View All
+                </a>
+
+            </div>
+
+
+            {% if complaints %}
+
+                <div class="table-responsive">
+
+                    <table class="table table-hover align-middle">
+
+                        <thead class="table-light">
+
+                            <tr>
+
+                                <th>Complaint ID</th>
+
+                                <th>Room</th>
+
+                                <th>Category</th>
+
+                                <th>Status</th>
+
+                                <th>Date</th>
+
+                                <th>Action</th>
+
+                            </tr>
+
+                        </thead>
+
+                        <tbody>
+
+                            {% for complaint in complaints[:5] %}
+
+                            <tr>
+
+                                <td>
+                                    <strong>
+                                        {{ complaint["complaint_id"] }}
+                                    </strong>
+                                </td>
+
+                                <td>
+                                    {{ complaint["room_number"] }}
+                                </td>
+
+                                <td>
+                                    {{ complaint["category"] }}
+                                </td>
+
+                                <td>
+
+                                    {% if complaint["status"] == "Submitted" %}
+
+                                        <span class="badge bg-secondary">
+                                            Submitted
+                                        </span>
+
+                                    {% elif complaint["status"] == "Assigned" %}
+
+                                        <span class="badge bg-info text-dark">
+                                            Assigned
+                                        </span>
+
+                                    {% elif complaint["status"] == "In Progress" %}
+
+                                        <span class="badge bg-warning text-dark">
+                                            In Progress
+                                        </span>
+
+                                    {% elif complaint["status"] == "Resolved" %}
+
+                                        <span class="badge bg-success">
+                                            Resolved
+                                        </span>
+
+                                    {% endif %}
+
+                                </td>
+
+                                <td>
+                                    {{ complaint["created_at"] }}
+                                </td>
+
+                                <td>
+
+                                    <a
+                                        href="{{ url_for(
+                                            'student_complaint_details',
+                                            complaint_id=complaint['id']
+                                        ) }}"
+                                        class="btn btn-sm btn-outline-primary"
+                                    >
+                                        View
+                                    </a>
+
+                                </td>
+
+                            </tr>
+
+                            {% endfor %}
+
+                        </tbody>
+
+                    </table>
+
+                </div>
+
+            {% else %}
+
+                <div class="text-center py-5">
+
+                    <div class="display-4">
+                        📭
+                    </div>
+
+                    <h5 class="mt-3">
+                        No Complaints Yet
+                    </h5>
+
+                    <p class="text-muted">
+                        You haven't submitted any hostel complaints.
+                    </p>
+
+                    <a
+                        href="{{ url_for('raise_complaint') }}"
+                        class="btn btn-primary"
+                    >
+                        Raise Your First Complaint
+                    </a>
+
+                </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Footer -->
+<footer class="bg-dark text-white text-center py-3 mt-5">
+
+    <small>
+        Smart Hostel Complaint & Maintenance System © 2026
+    </small>
+
+</footer>
+
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js">
+</script>
+
+<script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+</body>
+</html>

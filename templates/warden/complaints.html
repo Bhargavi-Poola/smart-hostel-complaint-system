@@ -1,0 +1,357 @@
+{% extends "base.html" %}
+
+{% block title %}Manage Complaints - Smart Hostel{% endblock %}
+
+{% block content %}
+
+<div class="container py-5">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+
+        <div>
+            <h2 class="fw-bold mb-1">Manage Complaints</h2>
+
+            <p class="text-muted mb-0">
+                Review and assign maintenance complaints from
+                {{ hostel_type }} Hostel.
+            </p>
+        </div>
+
+        <a href="{{ url_for('warden_dashboard') }}"
+           class="btn btn-outline-secondary">
+
+            <i class="bi bi-arrow-left"></i>
+            Dashboard
+
+        </a>
+
+    </div>
+
+
+    <!-- Filter Buttons -->
+    <div class="card border-0 shadow-sm mb-4">
+
+        <div class="card-body">
+
+            <div class="d-flex flex-wrap gap-2">
+
+                <a href="{{ url_for('warden_complaints') }}"
+                   class="btn btn-primary">
+
+                    All
+
+                </a>
+
+                <button class="btn btn-outline-secondary"
+                        onclick="filterComplaints('Submitted')">
+
+                    Submitted
+
+                </button>
+
+                <button class="btn btn-outline-info"
+                        onclick="filterComplaints('Assigned')">
+
+                    Assigned
+
+                </button>
+
+                <button class="btn btn-outline-warning"
+                        onclick="filterComplaints('In Progress')">
+
+                    In Progress
+
+                </button>
+
+                <button class="btn btn-outline-success"
+                        onclick="filterComplaints('Resolved')">
+
+                    Resolved
+
+                </button>
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Complaints -->
+    <div class="card border-0 shadow-sm">
+
+        <div class="card-header bg-white py-3">
+
+            <h5 class="fw-bold mb-0">
+                <i class="bi bi-list-check"></i>
+                {{ hostel_type }} Hostel Complaints
+            </h5>
+
+        </div>
+
+
+        <div class="card-body p-0">
+
+            {% if complaints %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover align-middle mb-0"
+                       id="complaintsTable">
+
+                    <thead class="table-light">
+
+                        <tr>
+
+                            <th class="px-4">
+                                Complaint ID
+                            </th>
+
+                            <th>
+                                Student
+                            </th>
+
+                            <th>
+                                Room
+                            </th>
+
+                            <th>
+                                Category
+                            </th>
+
+                            <th>
+                                Status
+                            </th>
+
+                            <th>
+                                Date
+                            </th>
+
+                            <th>
+                                Action
+                            </th>
+
+                        </tr>
+
+                    </thead>
+
+
+                    <tbody>
+
+                        {% for complaint in complaints %}
+
+                        <tr data-status="{{ complaint['status'] }}">
+
+                            <!-- Complaint ID -->
+                            <td class="px-4">
+
+                                <span class="fw-semibold text-primary">
+                                    {{ complaint['complaint_id'] }}
+                                </span>
+
+                            </td>
+
+
+                            <!-- Student -->
+                            <td>
+
+                                <div class="d-flex align-items-center">
+
+                                    <div class="bg-light rounded-circle
+                                                p-2 me-2">
+
+                                        <i class="bi bi-person"></i>
+
+                                    </div>
+
+                                    <span>
+                                        {{ complaint['student_name'] }}
+                                    </span>
+
+                                </div>
+
+                            </td>
+
+
+                            <!-- Room -->
+                            <td>
+
+                                <i class="bi bi-door-open text-muted"></i>
+
+                                {{ complaint['room_number'] }}
+
+                            </td>
+
+
+                            <!-- Category -->
+                            <td>
+
+                                {% if complaint['category'] == 'Electrical' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-lightning-charge"></i>
+                                    Electrical
+                                </span>
+
+                                {% elif complaint['category'] == 'Plumbing' %}
+
+                                <span class="badge bg-info">
+                                    <i class="bi bi-droplet"></i>
+                                    Plumbing
+                                </span>
+
+                                {% elif complaint['category'] == 'Cleaning' %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-stars"></i>
+                                    Cleaning
+                                </span>
+
+                                {% elif complaint['category'] == 'Wi-Fi/Network' %}
+
+                                <span class="badge bg-primary">
+                                    <i class="bi bi-wifi"></i>
+                                    Wi-Fi/Network
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-tools"></i>
+                                    General Maintenance
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Status -->
+                            <td>
+
+                                {% if complaint['status'] == 'Submitted' %}
+
+                                <span class="badge bg-secondary">
+                                    <i class="bi bi-send"></i>
+                                    Submitted
+                                </span>
+
+                                {% elif complaint['status'] == 'Assigned' %}
+
+                                <span class="badge bg-info">
+                                    <i class="bi bi-person-check"></i>
+                                    Assigned
+                                </span>
+
+                                {% elif complaint['status'] == 'In Progress' %}
+
+                                <span class="badge bg-warning text-dark">
+                                    <i class="bi bi-hourglass-split"></i>
+                                    In Progress
+                                </span>
+
+                                {% elif complaint['status'] == 'Resolved' %}
+
+                                <span class="badge bg-success">
+                                    <i class="bi bi-check-circle"></i>
+                                    Resolved
+                                </span>
+
+                                {% else %}
+
+                                <span class="badge bg-secondary">
+                                    {{ complaint['status'] }}
+                                </span>
+
+                                {% endif %}
+
+                            </td>
+
+
+                            <!-- Date -->
+                            <td>
+
+                                <small class="text-muted">
+                                    {{ complaint['created_at'] }}
+                                </small>
+
+                            </td>
+
+
+                            <!-- Action -->
+                            <td>
+
+                                <a href="{{ url_for(
+                                    'warden_complaint_details',
+                                    complaint_id=complaint['id']
+                                ) }}"
+                                   class="btn btn-sm btn-outline-primary">
+
+                                    <i class="bi bi-eye"></i>
+                                    View
+
+                                </a>
+
+                            </td>
+
+                        </tr>
+
+                        {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <!-- Empty State -->
+            <div class="text-center py-5">
+
+                <i class="bi bi-clipboard-x display-4 text-muted"></i>
+
+                <h5 class="fw-bold mt-3">
+                    No Complaints Found
+                </h5>
+
+                <p class="text-muted">
+                    There are no complaints from your hostel.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<!-- Filter Script -->
+<script>
+
+function filterComplaints(status) {
+
+    const rows = document.querySelectorAll(
+        "#complaintsTable tbody tr"
+    );
+
+    rows.forEach(function(row) {
+
+        if (row.dataset.status === status) {
+            row.style.display = "";
+        } else {
+            row.style.display = "none";
+        }
+
+    });
+
+}
+
+</script>
+
+{% endblock %}

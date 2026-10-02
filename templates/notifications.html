@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+
+{% block title %}Notifications - Smart Hostel{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold mb-1"><i class="bi bi-bell"></i> Notifications</h2>
+            <p class="text-muted mb-0">Updates about your hostel complaints.</p>
+        </div>
+        <a href="javascript:history.back()" class="btn btn-outline-secondary">Back</a>
+    </div>
+
+    <div class="card border-0 shadow-sm">
+        <div class="card-body p-0">
+            {% if notifications %}
+                {% for notification in notifications %}
+                <a href="{{ url_for('read_notification', notification_id=notification['id']) }}"
+                   class="d-block text-decoration-none text-dark p-4 border-bottom {% if not notification['is_read'] %}bg-light{% endif %}">
+                    <div class="d-flex gap-3">
+                        <div class="fs-4 text-primary"><i class="bi bi-bell-fill"></i></div>
+                        <div class="flex-grow-1">
+                            <div class="fw-semibold">{{ notification['message'] }}</div>
+                            <small class="text-muted">{{ notification['created_at'] }}</small>
+                        </div>
+                        {% if not notification['is_read'] %}<span class="badge bg-primary align-self-start">New</span>{% endif %}
+                    </div>
+                </a>
+                {% endfor %}
+            {% else %}
+                <div class="text-center p-5 text-muted">
+                    <i class="bi bi-bell-slash display-5"></i>
+                    <p class="mt-3 mb-0">No notifications yet.</p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+</div>
+{% endblock %}

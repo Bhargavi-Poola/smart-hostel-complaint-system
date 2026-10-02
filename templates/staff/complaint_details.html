@@ -1,0 +1,427 @@
+{% extends "base.html" %}
+
+{% block title %}Complaint Details{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">
+                <i class="bi bi-clipboard-check"></i>
+                Complaint Details
+            </h2>
+            <p class="text-muted mb-0">
+                View complaint information and update its status
+            </p>
+        </div>
+
+        <a href="{{ url_for('staff_dashboard') }}"
+           class="btn btn-outline-primary">
+            <i class="bi bi-arrow-left"></i>
+            Back to Dashboard
+        </a>
+    </div>
+
+
+    <div class="row g-4">
+
+        <!-- Complaint Information -->
+        <div class="col-lg-8">
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-header bg-primary text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-info-circle"></i>
+                        Complaint Information
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <div class="row">
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Complaint ID</strong>
+                            <p class="mb-0">
+                                {{ complaint['complaint_id'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Student Name</strong>
+                            <p class="mb-0">
+                                {{ complaint['student_name'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Roll Number</strong>
+                            <p class="mb-0">
+                                {{ complaint['roll_number'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Hostel</strong>
+                            <p class="mb-0">
+                                {{ complaint['hostel_type'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Room Number</strong>
+                            <p class="mb-0">
+                                {{ complaint['room_number'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <strong>Category</strong>
+                            <p class="mb-0">
+                                {{ complaint['category'] }}
+                            </p>
+                        </div>
+
+                        <div class="col-12 mb-3">
+                            <strong>Description</strong>
+                            <div class="bg-light rounded p-3 mt-2">
+                                {{ complaint['description'] }}
+                            </div>
+                        </div>
+
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!-- Complaint Photo -->
+            {% if complaint['photo'] %}
+
+            <div class="card shadow-sm border-0 mb-4">
+
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-image"></i>
+                        Complaint Photo
+                    </h5>
+                </div>
+
+                <div class="card-body text-center">
+
+                    <img src="{{ url_for(
+                        'static',
+                        filename='uploads/complaint_photos/' + complaint['photo']
+                    ) }}"
+                    class="img-fluid rounded"
+                    style="max-height: 400px;"
+                    alt="Complaint Photo">
+
+                </div>
+
+            </div>
+
+            {% endif %}
+
+
+            {% if complaint['resolution_photo'] %}
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0"><i class="bi bi-check2-circle"></i> Resolution Photo</h5>
+                </div>
+                <div class="card-body text-center">
+                    <img src="{{ url_for('static', filename='uploads/resolution_photos/' + complaint['resolution_photo']) }}"
+                         class="img-fluid rounded" style="max-height: 400px;" alt="Resolution Photo">
+                </div>
+            </div>
+
+            {% endif %}
+
+
+            <!-- Student Feedback -->
+            {% if complaint['feedback_rating'] is not none %}
+
+            <div class="card shadow-sm border-0 mb-4">
+                <div class="card-header bg-warning">
+                    <h5 class="mb-0">
+                        <i class="bi bi-star-fill"></i>
+                        Student Feedback
+                    </h5>
+                </div>
+                <div class="card-body">
+                    <div class="mb-2">
+                        <strong>Rating:</strong>
+                        <span class="text-warning fs-5">
+                            {% for i in range(1, 6) %}
+                                {% if i <= complaint['feedback_rating'] %}★{% else %}☆{% endif %}
+                            {% endfor %}
+                        </span>
+                        <span class="fw-semibold">{{ complaint['feedback_rating'] }}/5</span>
+                    </div>
+
+                    {% if complaint['feedback_comment'] %}
+                    <div class="bg-light rounded p-3">
+                        <strong>Student Comment:</strong>
+                        <p class="mb-0 mt-1">{{ complaint['feedback_comment'] }}</p>
+                    </div>
+                    {% else %}
+                    <p class="text-muted mb-0">No comment was added by the student.</p>
+                    {% endif %}
+
+                    {% if complaint['feedback_at'] %}
+                    <small class="text-muted d-block mt-2">Submitted: {{ complaint['feedback_at'] }}</small>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% endif %}
+
+
+            <!-- Status History -->
+            <div class="card shadow-sm border-0">
+
+                <div class="card-header">
+                    <h5 class="mb-0">
+                        <i class="bi bi-clock-history"></i>
+                        Status History
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    {% if updates %}
+
+                    <div class="timeline">
+
+                        {% for update in updates %}
+
+                        <div class="mb-4">
+
+                            <div class="d-flex">
+
+                                <div class="me-3">
+                                    <i class="bi bi-circle-fill text-primary"></i>
+                                </div>
+
+                                <div>
+
+                                    <h6 class="fw-bold mb-1">
+                                        {{ update['status'] }}
+                                    </h6>
+
+                                    <small class="text-muted">
+                                        {{ update['updated_at'] }}
+                                    </small>
+
+                                    {% if update['note'] %}
+                                    <p class="mb-0 mt-2">
+                                        {{ update['note'] }}
+                                    </p>
+                                    {% endif %}
+
+                                </div>
+
+                            </div>
+
+                        </div>
+
+                        {% endfor %}
+
+                    </div>
+
+                    {% else %}
+
+                    <p class="text-muted mb-0">
+                        No status updates available.
+                    </p>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <!-- Status Update -->
+        <div class="col-lg-4">
+
+            <div class="card shadow-sm border-0 sticky-top"
+                 style="top: 20px;">
+
+                <div class="card-header bg-success text-white">
+                    <h5 class="mb-0">
+                        <i class="bi bi-arrow-repeat"></i>
+                        Update Status
+                    </h5>
+                </div>
+
+                <div class="card-body">
+
+                    <!-- Current Status -->
+                    <div class="text-center mb-4">
+
+                        <p class="text-muted mb-2">
+                            Current Status
+                        </p>
+
+                        {% if complaint['status'] == 'Submitted' %}
+
+                            <span class="badge bg-secondary fs-6 px-3 py-2">
+                                Submitted
+                            </span>
+
+                        {% elif complaint['status'] == 'Assigned' %}
+
+                            <span class="badge bg-primary fs-6 px-3 py-2">
+                                Assigned
+                            </span>
+
+                        {% elif complaint['status'] == 'In Progress' %}
+
+                            <span class="badge bg-warning text-dark fs-6 px-3 py-2">
+                                In Progress
+                            </span>
+
+                        {% elif complaint['status'] == 'Resolved' %}
+
+                            <span class="badge bg-success fs-6 px-3 py-2">
+                                Resolved
+                            </span>
+
+                        {% endif %}
+
+                    </div>
+
+
+                    {% if complaint['status'] != 'Resolved' %}
+
+                    <form method="POST" enctype="multipart/form-data"
+                          action="{{ url_for(
+                              'staff_update_status',
+                              complaint_id=complaint['id']
+                          ) }}">
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Select Status
+                            </label>
+
+                            <select name="status"
+                                    class="form-select"
+                                    required>
+
+                                <option value="">
+                                    -- Select Status --
+                                </option>
+
+                                {% if complaint['status'] == 'Assigned' %}
+                                <option value="In Progress">
+                                    In Progress
+                                </option>
+                                {% endif %}
+
+                                {% if complaint['status'] == 'In Progress' %}
+                                <option value="Resolved">
+                                    Resolved
+                                </option>
+                                {% endif %}
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Note
+                            </label>
+
+                            <textarea name="note"
+                                      class="form-control"
+                                      rows="4"
+                                      placeholder="Add a note about the work..."></textarea>
+
+                        </div>
+
+
+                        <div class="mb-3">
+
+                            <label class="form-label fw-semibold">
+                                Resolution Photo
+                            </label>
+
+                            <input type="file"
+                                   name="resolution_photo"
+                                   class="form-control"
+                                   accept="image/png,image/jpeg,image/gif,image/webp"
+                                   id="resolutionPhoto">
+
+                            <small class="text-muted">
+                                Required only when selecting <strong>Resolved</strong>. Upload a photo showing the completed repair.
+                            </small>
+
+                        </div>
+
+
+                        <button type="submit"
+                                class="btn btn-success w-100">
+
+                            <i class="bi bi-check-circle"></i>
+                            Update Status
+
+                        </button>
+
+                    </form>
+
+                    <script>
+                        document.addEventListener("DOMContentLoaded", function () {
+                            const statusSelect = document.querySelector('select[name="status"]');
+                            const photoInput = document.getElementById("resolutionPhoto");
+                            if (statusSelect && photoInput) {
+                                function toggleResolutionPhoto() {
+                                    photoInput.required = statusSelect.value === "Resolved";
+                                }
+                                statusSelect.addEventListener("change", toggleResolutionPhoto);
+                                toggleResolutionPhoto();
+                            }
+                        });
+                    </script>
+
+                    {% else %}
+
+                    <div class="alert alert-success text-center mb-0">
+
+                        <i class="bi bi-check-circle-fill fs-3"></i>
+
+                        <p class="fw-bold mt-2 mb-1">
+                            Complaint Resolved
+                        </p>
+
+                        <small>
+                            This complaint has been successfully resolved.
+                        </small>
+
+                    </div>
+
+                    {% endif %}
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+{% endblock %}

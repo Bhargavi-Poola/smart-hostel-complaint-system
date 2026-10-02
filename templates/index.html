@@ -1,0 +1,577 @@
+{% extends "base.html" %}
+
+{% block title %}Smart Hostel Complaint Management System{% endblock %}
+
+{% block content %}
+
+<!-- =========================
+     HERO SECTION
+========================= -->
+
+<section class="hero-section">
+
+    <div class="container">
+
+        <div class="row align-items-center">
+
+            <!-- LEFT -->
+            <div class="col-lg-7">
+
+                <span class="badge bg-light text-primary mb-3 px-3 py-2">
+                    <i class="bi bi-building"></i>
+                    Smart Hostel Management
+                </span>
+
+                <h1 class="display-4 fw-bold mb-3">
+                    Smart Hostel Complaint
+                    Management System
+                </h1>
+
+                <p class="lead mb-4">
+                    A simple digital platform for hostel students to
+                    submit complaints, track their status, and get
+                    maintenance issues resolved efficiently.
+                </p>
+
+                <div class="d-flex gap-3 flex-wrap">
+
+                    <a href="{{ url_for('register') }}"
+                       class="btn btn-light btn-lg px-4">
+
+                        <i class="bi bi-person-plus"></i>
+                        Student Register
+
+                    </a>
+
+                    <a href="{{ url_for('login') }}"
+                       class="btn btn-outline-light btn-lg px-4">
+
+                        <i class="bi bi-box-arrow-in-right"></i>
+                        Login
+
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- RIGHT -->
+            <div class="col-lg-5 mt-5 mt-lg-0">
+
+                <div class="hero-icon-card text-center">
+
+                    <i class="bi bi-clipboard-check text-primary"
+                       style="font-size:90px;"></i>
+
+                    <h3 class="fw-bold mt-3">
+                        Report. Track. Resolve.
+                    </h3>
+
+                    <p class="text-muted mb-0">
+                        Manage hostel complaints digitally
+                        from submission to resolution.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     HOW IT WORKS
+========================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                How It Works
+            </h2>
+
+            <p class="text-muted">
+                Four simple steps to resolve a hostel complaint
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- STEP 1 -->
+            <div class="col-md-3">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="mb-3">
+                            <i class="bi bi-box-arrow-in-right
+                                      fs-1 text-primary"></i>
+                        </div>
+
+                        <h5 class="fw-bold">
+                            1. Login
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Student logs in using their
+                            roll number and password.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 2 -->
+            <div class="col-md-3">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="mb-3">
+                            <i class="bi bi-pencil-square
+                                      fs-1 text-primary"></i>
+                        </div>
+
+                        <h5 class="fw-bold">
+                            2. Raise Complaint
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Enter room details, select a category,
+                            describe the issue and upload a photo.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 3 -->
+            <div class="col-md-3">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="mb-3">
+                            <i class="bi bi-person-check
+                                      fs-1 text-primary"></i>
+                        </div>
+
+                        <h5 class="fw-bold">
+                            3. Staff Assigned
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            The warden reviews the complaint
+                            and assigns maintenance staff.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- STEP 4 -->
+            <div class="col-md-3">
+
+                <div class="card h-100 text-center shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <div class="mb-3">
+                            <i class="bi bi-check-circle
+                                      fs-1 text-success"></i>
+                        </div>
+
+                        <h5 class="fw-bold">
+                            4. Issue Resolved
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Staff completes the work and
+                            updates the complaint as resolved.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     KEY FEATURES
+========================= -->
+
+<section class="py-5 bg-light">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Key Features
+            </h2>
+
+            <p class="text-muted">
+                Everything needed for organized hostel complaint management
+            </p>
+
+        </div>
+
+
+        <div class="row g-4">
+
+            <!-- FEATURE 1 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-clipboard-plus
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Digital Complaints
+                        </h5>
+
+                        <p class="text-muted">
+                            Students can submit complaints online
+                            instead of depending on verbal communication
+                            or paper registers.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 2 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-camera
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Photo Upload
+                        </h5>
+
+                        <p class="text-muted">
+                            Students can attach a photo to clearly
+                            show the maintenance problem.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 3 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-search
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Complaint Tracking
+                        </h5>
+
+                        <p class="text-muted">
+                            Students can track the progress of
+                            their complaints at any time.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 4 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-shield-lock
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Role-Based Access
+                        </h5>
+
+                        <p class="text-muted">
+                            Separate access is provided for students,
+                            wardens, maintenance staff and admin.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 5 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-clock-history
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Status History
+                        </h5>
+
+                        <p class="text-muted">
+                            Every complaint maintains a history of
+                            status updates from submission to resolution.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- FEATURE 6 -->
+            <div class="col-md-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body p-4">
+
+                        <i class="bi bi-bar-chart-line
+                                  fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-3">
+                            Organized Management
+                        </h5>
+
+                        <p class="text-muted">
+                            Wardens and administrators can monitor
+                            complaints and maintenance activities.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     COMPLAINT STATUS FLOW
+========================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="text-center mb-5">
+
+            <h2 class="fw-bold">
+                Complaint Status Flow
+            </h2>
+
+            <p class="text-muted">
+                Track every complaint from submission to resolution
+            </p>
+
+        </div>
+
+
+        <div class="row align-items-center text-center g-3">
+
+            <div class="col-md-3">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-send fs-1 text-secondary"></i>
+
+                        <h5 class="fw-bold mt-2">
+                            Submitted
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Student submits the complaint.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-person-check fs-1 text-primary"></i>
+
+                        <h5 class="fw-bold mt-2">
+                            Assigned
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Warden assigns maintenance staff.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-tools fs-1 text-warning"></i>
+
+                        <h5 class="fw-bold mt-2">
+                            In Progress
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Staff works on the complaint.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-3">
+
+                <div class="card shadow-sm border-0">
+
+                    <div class="card-body">
+
+                        <i class="bi bi-check-circle fs-1 text-success"></i>
+
+                        <h5 class="fw-bold mt-2">
+                            Resolved
+                        </h5>
+
+                        <p class="text-muted mb-0">
+                            Maintenance issue is resolved.
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- =========================
+     CALL TO ACTION
+========================= -->
+
+<section class="py-5 bg-primary text-white">
+
+    <div class="container text-center">
+
+        <i class="bi bi-building-check fs-1"></i>
+
+        <h2 class="fw-bold mt-3">
+            Make Hostel Maintenance Smarter
+        </h2>
+
+        <p class="lead">
+            Report problems digitally and track their resolution easily.
+        </p>
+
+        <div class="d-flex justify-content-center gap-3 flex-wrap">
+
+            <a href="{{ url_for('register') }}"
+               class="btn btn-light btn-lg px-4">
+
+                <i class="bi bi-person-plus"></i>
+                Register
+
+            </a>
+
+            <a href="{{ url_for('login') }}"
+               class="btn btn-outline-light btn-lg px-4">
+
+                <i class="bi bi-box-arrow-in-right"></i>
+                Login
+
+            </a>
+
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

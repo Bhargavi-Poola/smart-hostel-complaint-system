@@ -1,0 +1,240 @@
+{% extends "base.html" %}
+
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+
+<div class="container py-4">
+
+    <!-- Header -->
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+            <h2 class="fw-bold">
+                <i class="bi bi-tools"></i> Staff Dashboard
+            </h2>
+            <p class="text-muted mb-0">
+                Manage your assigned hostel maintenance complaints
+            </p>
+        </div>
+
+        <span class="badge bg-primary fs-6 px-3 py-2">
+            {{ user['name'] }}
+        </span>
+    </div>
+
+
+    <!-- Statistics -->
+    <div class="row g-4 mb-4">
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Assigned Complaints</p>
+                            <h2 class="fw-bold">{{ stats.assigned }}</h2>
+                        </div>
+                        <i class="bi bi-person-check fs-1 text-primary"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">In Progress</p>
+                            <h2 class="fw-bold">{{ stats.in_progress }}</h2>
+                        </div>
+                        <i class="bi bi-arrow-repeat fs-1 text-warning"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-4">
+            <div class="card shadow-sm border-0 h-100">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <p class="text-muted mb-1">Resolved</p>
+                            <h2 class="fw-bold">{{ stats.resolved }}</h2>
+                        </div>
+                        <i class="bi bi-check-circle fs-1 text-success"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Staff Information -->
+    <div class="card shadow-sm border-0 mb-4">
+        <div class="card-header bg-primary text-white">
+            <h5 class="mb-0">
+                <i class="bi bi-person-badge"></i>
+                Staff Information
+            </h5>
+        </div>
+
+        <div class="card-body">
+
+            <div class="row">
+
+                <div class="col-md-4 mb-3">
+                    <strong>Name</strong>
+                    <p class="mb-0">{{ user['name'] }}</p>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <strong>Department</strong>
+                    <p class="mb-0">{{ staff['department'] }}</p>
+                </div>
+
+                <div class="col-md-4 mb-3">
+                    <strong>Hostel</strong>
+                    <p class="mb-0">{{ staff['hostel_type'] }}</p>
+                </div>
+
+            </div>
+
+        </div>
+    </div>
+
+
+    <!-- Assigned Complaints -->
+    <div class="card shadow-sm border-0">
+
+        <div class="card-header d-flex justify-content-between align-items-center">
+            <h5 class="mb-0">
+                <i class="bi bi-list-check"></i>
+                My Assigned Complaints
+            </h5>
+
+            <span class="badge bg-primary">
+                {{ complaints|length }} Complaints
+            </span>
+        </div>
+
+        <div class="card-body p-0">
+
+            {% if complaints %}
+
+            <div class="table-responsive">
+
+                <table class="table table-hover mb-0 align-middle">
+
+                    <thead class="table-light">
+                        <tr>
+                            <th>Complaint ID</th>
+                            <th>Student</th>
+                            <th>Room</th>
+                            <th>Category</th>
+                            <th>Status</th>
+                            <th>Date</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                    {% for complaint in complaints %}
+
+                        <tr>
+
+                            <td>
+                                <strong>{{ complaint['complaint_id'] }}</strong>
+                            </td>
+
+                            <td>
+                                {{ complaint['student_name'] }}
+                            </td>
+
+                            <td>
+                                {{ complaint['room_number'] }}
+                            </td>
+
+                            <td>
+                                {{ complaint['category'] }}
+                            </td>
+
+                            <td>
+
+                                {% if complaint['status'] == 'Submitted' %}
+                                    <span class="badge bg-secondary">
+                                        Submitted
+                                    </span>
+
+                                {% elif complaint['status'] == 'Assigned' %}
+                                    <span class="badge bg-primary">
+                                        Assigned
+                                    </span>
+
+                                {% elif complaint['status'] == 'In Progress' %}
+                                    <span class="badge bg-warning text-dark">
+                                        In Progress
+                                    </span>
+
+                                {% elif complaint['status'] == 'Resolved' %}
+                                    <span class="badge bg-success">
+                                        Resolved
+                                    </span>
+
+                                {% endif %}
+
+                            </td>
+
+                            <td>
+                                {{ complaint['created_at'] }}
+                            </td>
+
+                            <td>
+                                <a href="{{ url_for(
+                                    'staff_complaint_details',
+                                    complaint_id=complaint['id']
+                                ) }}"
+                                   class="btn btn-sm btn-primary">
+
+                                    <i class="bi bi-eye"></i>
+                                    View
+
+                                </a>
+                            </td>
+
+                        </tr>
+
+                    {% endfor %}
+
+                    </tbody>
+
+                </table>
+
+            </div>
+
+            {% else %}
+
+            <div class="text-center py-5">
+
+                <i class="bi bi-inbox fs-1 text-muted"></i>
+
+                <h5 class="mt-3">
+                    No complaints assigned
+                </h5>
+
+                <p class="text-muted">
+                    Assigned maintenance complaints will appear here.
+                </p>
+
+            </div>
+
+            {% endif %}
+
+        </div>
+    </div>
+
+</div>
+
+{% endblock %}

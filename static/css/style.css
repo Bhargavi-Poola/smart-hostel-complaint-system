@@ -1,0 +1,304 @@
+/* ===========================
+   SMART HOSTEL SYSTEM
+   style.css
+=========================== */
+
+/* Google Font */
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Poppins',sans-serif;
+    background:#f4f6f9;
+    color:#333;
+    min-height:100vh;
+}
+
+/* ===========================
+   NAVBAR
+=========================== */
+
+.navbar{
+    background:linear-gradient(135deg,#0d6efd,#084298);
+    box-shadow:0 2px 10px rgba(0,0,0,0.1);
+}
+
+.navbar-brand{
+    font-weight:700;
+    font-size:22px;
+}
+
+.nav-link{
+    color:white !important;
+    margin-left:10px;
+    transition:0.3s;
+}
+
+.nav-link:hover{
+    color:#ffd43b !important;
+}
+
+/* ===========================
+   HERO SECTION
+=========================== */
+
+.hero-section{
+    background:linear-gradient(
+        135deg,
+        #0d6efd,
+        #4f8ef7
+    );
+    color:white;
+    padding:80px 0;
+}
+
+.hero-section h1{
+    font-weight:700;
+}
+
+.hero-icon-card{
+    background:white;
+    color:#333;
+    border-radius:20px;
+    padding:40px;
+    box-shadow:0 10px 30px rgba(0,0,0,0.1);
+}
+
+/* ===========================
+   CARDS
+=========================== */
+
+.card{
+    border:none;
+    border-radius:15px;
+    overflow:hidden;
+    transition:0.3s;
+}
+
+.card:hover{
+    transform:translateY(-5px);
+    box-shadow:0 10px 25px rgba(0,0,0,0.1);
+}
+
+.card-header{
+    font-weight:600;
+}
+
+/* ===========================
+   BUTTONS
+=========================== */
+
+.btn{
+    border-radius:10px;
+    font-weight:500;
+}
+
+.btn-primary{
+    background:#0d6efd;
+    border:none;
+}
+
+.btn-primary:hover{
+    background:#0b5ed7;
+}
+
+.btn-success{
+    border:none;
+}
+
+.btn-warning{
+    border:none;
+}
+
+/* ===========================
+   TABLES
+=========================== */
+
+.table{
+    margin-bottom:0;
+}
+
+.table thead{
+    background:#f1f3f5;
+}
+
+.table th{
+    font-weight:600;
+    padding:15px;
+}
+
+.table td{
+    padding:15px;
+    vertical-align:middle;
+}
+
+/* ===========================
+   BADGES
+=========================== */
+
+.badge{
+    padding:8px 12px;
+    border-radius:20px;
+    font-size:12px;
+}
+
+/* ===========================
+   FORMS
+=========================== */
+
+.form-control,
+.form-select{
+    border-radius:10px;
+    padding:12px;
+    border:1px solid #ced4da;
+}
+
+.form-control:focus,
+.form-select:focus{
+    box-shadow:none;
+    border-color:#0d6efd;
+}
+
+label{
+    font-weight:500;
+}
+
+/* ===========================
+   LOGIN / REGISTER
+=========================== */
+
+.auth-container{
+    min-height:80vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.auth-card{
+    width:100%;
+    max-width:500px;
+    border-radius:20px;
+}
+
+/* ===========================
+   DASHBOARD CARDS
+=========================== */
+
+.stat-card{
+    border-radius:20px;
+    color:white;
+    padding:20px;
+}
+
+.bg-blue{
+    background:#0d6efd;
+}
+
+.bg-green{
+    background:#198754;
+}
+
+.bg-orange{
+    background:#fd7e14;
+}
+
+.bg-red{
+    background:#dc3545;
+}
+
+/* ===========================
+   COMPLAINT STATUS
+=========================== */
+
+.status-submitted{
+    background:#6c757d;
+    color:white;
+}
+
+.status-assigned{
+    background:#0d6efd;
+    color:white;
+}
+
+.status-progress{
+    background:#ffc107;
+    color:black;
+}
+
+.status-resolved{
+    background:#198754;
+    color:white;
+}
+
+/* ===========================
+   IMAGE PREVIEW
+=========================== */
+
+.preview-image{
+    width:120px;
+    height:120px;
+    object-fit:cover;
+    border-radius:10px;
+    border:2px solid #ddd;
+}
+
+/* ===========================
+   MODAL
+=========================== */
+
+.modal-content{
+    border-radius:15px;
+}
+
+/* ===========================
+   FOOTER
+=========================== */
+
+.footer{
+    background:#212529;
+    color:white;
+    text-align:center;
+    padding:20px;
+    margin-top:50px;
+}
+
+/* ===========================
+   PROGRESS BAR
+=========================== */
+
+.progress{
+    border-radius:20px;
+}
+
+.progress-bar{
+    border-radius:20px;
+}
+
+/* ===========================
+   RESPONSIVE
+=========================== */
+
+@media(max-width:768px){
+
+    .hero-section{
+        text-align:center;
+    }
+
+    .table{
+        font-size:14px;
+    }
+
+    .navbar-brand{
+        font-size:18px;
+    }
+
+    .hero-section h1{
+        font-size:32px;
+    }
+
+}
